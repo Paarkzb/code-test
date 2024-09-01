@@ -48,10 +48,10 @@ func (r *NotePostgres) GetAll(userId int) ([]model.NoteResponse, error) {
 			u.username as user_username
 		FROM public.note 
 		LEFT JOIN public.user as u ON u.id = note.rf_user_id
-		WHERE note.deleted=false
+		WHERE note.deleted=false and note.rf_user_id=$1
 		ORDER BY note.created_at DESC`
 
-	rows, err := r.db.Query(context.Background(), query)
+	rows, err := r.db.Query(context.Background(), query, userId)
 	for rows.Next() {
 		var note model.NoteResponse
 		err = rows.Scan(&note.Id, &note.Body, &note.User.Id, &note.User.Name, &note.User.Username)
@@ -73,9 +73,9 @@ func (r *NotePostgres) GetById(userId, noteId int) (model.NoteResponse, error) {
 			note.id, note.body, u.id, u.name, u.username
 		FROM public.note
 		LEFT JOIN public.user as u on u.id=note.rf_user_id 
-		WHERE note.id=$1`
+		WHERE note.id=$1 and note.rf_user_id=$2 and note.deleted=false`
 
-	err := r.db.QueryRow(context.Background(), query, noteId).Scan(&note.Id, &note.Body, &note.User.Id, &note.User.Name, &note.User.Username)
+	err := r.db.QueryRow(context.Background(), query, noteId, userId).Scan(&note.Id, &note.Body, &note.User.Id, &note.User.Name, &note.User.Username)
 	if err != nil {
 		return note, err
 	}
@@ -89,8 +89,8 @@ func (r *NotePostgres) Delete(userId, noteId int) error {
 		return err
 	}
 
-	query := "UPDATE public.note SET deleted=true WHERE id=$1"
-	_, err = tx.Exec(context.Background(), query, noteId)
+	query := "UPDATE public.note SET deleted=true WHERE id=$1 and rf_user_id=$2"
+	_, err = tx.Exec(context.Background(), query, noteId, userId)
 	if err != nil {
 		_ = tx.Rollback(context.Background())
 		return err
@@ -121,7 +121,7 @@ func (r *NotePostgres) Update(userId, noteId int, input model.UpdateNoteInput) e
 
 	setQuizQuery := strings.Join(noteSetValues, ", ")
 
-	quizQuery := fmt.Sprintf("UPDATE public.note SET %s WHERE id=$%d", setQuizQuery, noteArgId)
+	quizQuery := fmt.Sprintf("UPDATE public.note SET %s WHERE id=$%d and rf_user_id=$%d", setQuizQuery, noteArgId, noteArgId+1)
 	noteArgs = append(noteArgs, noteId)
 
 	// logrus.Printf("Update note: %s", quizQuery)
