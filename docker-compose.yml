@@ -1,0 +1,42 @@
+services:
+  test-server:
+    depends_on:
+      - test-postgres
+    build:
+      context: .
+    container_name: test-server
+    hostname: test-server
+    networks:
+      - test-net
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    volumes:
+      - test-server-volume:/app
+    deploy:
+      restart_policy:
+        condition: on-failure
+  test-postgres:
+    image: postgres
+    container_name: test-postgres
+    hostname: test-postgres
+    networks:
+      - test-net
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD:?database password not set}
+    ports:
+      - 5443:5432
+    volumes:
+      - test-postgres-volume:/var/lib/postgresql/data
+    deploy:
+      restart_policy:
+        condition: on-failure
+
+volumes:
+  test-postgres-volume:
+  test-server-volume:
+
+networks:
+  test-net:
+    driver: bridge
