@@ -1,10 +1,10 @@
 package service
 
 import (
+	"codetest/internal/model"
+	"codetest/pkg/repository"
 	"crypto/tls"
 	"encoding/json"
-	"medodstest/internal/model"
-	"medodstest/pkg/repository"
 	"net/http"
 	"strings"
 )

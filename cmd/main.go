@@ -1,11 +1,11 @@
 package main
 
 import (
+	"codetest/internal/server"
+	"codetest/pkg/handler"
+	"codetest/pkg/repository"
+	"codetest/pkg/service"
 	"context"
-	"medodstest/internal/server"
-	"medodstest/pkg/handler"
-	"medodstest/pkg/repository"
-	"medodstest/pkg/service"
 	"os"
 	"os/signal"
 	"syscall"

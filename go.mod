@@ -1,4 +1,4 @@
-module medodstest
+module codetest
 
 go 1.22.5
 

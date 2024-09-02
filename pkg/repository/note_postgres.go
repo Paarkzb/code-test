@@ -1,9 +1,9 @@
 package repository
 
 import (
+	"codetest/internal/model"
 	"context"
 	"fmt"
-	"medodstest/internal/model"
 	"strings"
 	"time"
 

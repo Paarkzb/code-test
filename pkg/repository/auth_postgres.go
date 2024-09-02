@@ -1,8 +1,8 @@
 package repository
 
 import (
+	"codetest/internal/model"
 	"context"
-	"medodstest/internal/model"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )

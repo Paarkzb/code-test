@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"medodstest/pkg/service"
+	"codetest/pkg/service"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"

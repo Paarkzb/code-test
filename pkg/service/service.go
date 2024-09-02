@@ -1,14 +1,13 @@
 package service
 
 import (
-	"medodstest/internal/model"
-	medodstest "medodstest/internal/model"
-	"medodstest/pkg/repository"
+	"codetest/internal/model"
+	"codetest/pkg/repository"
 )
 
 type Authorization interface {
-	CreateUser(user medodstest.User) (int, error)
-	GetUser(userId int) (medodstest.UserResponse, error)
+	CreateUser(user model.User) (int, error)
+	GetUser(userId int) (model.UserResponse, error)
 	GenerateToken(username, password string) (string, error)
 	ParseToken(accessToken string) (int, error)
 }

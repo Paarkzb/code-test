@@ -1,11 +1,11 @@
 package service
 
 import (
+	"codetest/internal/model"
+	"codetest/pkg/repository"
 	"crypto/sha1"
 	"errors"
 	"fmt"
-	"medodstest/internal/model"
-	"medodstest/pkg/repository"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"

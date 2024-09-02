@@ -1,8 +1,8 @@
 package handler
 
 import (
+	"codetest/internal/model"
 	"encoding/json"
-	"medodstest/internal/model"
 	"net/http"
 	"strconv"
 
