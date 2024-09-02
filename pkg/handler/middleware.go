@@ -15,12 +15,12 @@ const (
 func (h *Handler) userIdentity(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		header := r.Header
-		if header == nil {
+		headerParts := strings.Split(header["Authorization"][0], " ")
+		if len(headerParts) == 0 {
 			newErrorResponse(w, http.StatusUnauthorized, "пустой header авторизации")
 			return
 		}
 
-		headerParts := strings.Split(header["Authorization"][0], " ")
 		if len(headerParts) != 2 || headerParts[0] != "Bearer" {
 			newErrorResponse(w, http.StatusUnauthorized, "неправильный header авторизации")
 			return
